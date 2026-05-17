@@ -10,7 +10,7 @@ Automatically applies to LinkedIn Easy Apply jobs that match your criteria — n
 
 ### Step 1 — Download
 
-👉 **[Click here to download the latest version](../../releases/latest/download/linkedin-easy-apply-extension.zip)**
+👉 **[Click here to download the latest version](https://github.com/rsk2111999/linkedin-easy-apply-bot/releases/latest/download/linkedin-easy-apply-extension.zip)**
 
 Unzip the file. You'll get a folder called `linkedin-easy-apply-extension`.
 
@@ -95,7 +95,7 @@ Click the ⚡ icon → edit fields → Save Profile. Changes take effect immedia
 
 ## Updating to a newer version
 
-1. Download the new zip from [Releases](../../releases)
+1. Download the new zip from [Releases](https://github.com/rsk2111999/linkedin-easy-apply-bot/releases)
 2. Unzip and replace the old folder
 3. Go to `chrome://extensions` → find the extension → click the **↻ refresh icon**
 
