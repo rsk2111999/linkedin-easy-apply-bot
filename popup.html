@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LinkedIn Easy Apply Bot</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">⚡</div>
+      <div>
+        <h1>Easy Apply Bot</h1>
+        <span class="status-badge" id="statusBadge">Idle</span>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="profile">Profile</button>
+      <button class="tab" data-tab="job">Job Prefs</button>
+      <button class="tab" data-tab="filters">Filters</button>
+      <button class="tab" data-tab="control">Run</button>
+    </div>
+
+    <!-- Profile Tab -->
+    <div class="tab-content active" id="tab-profile">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="Jane Smith">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="jane@gmail.com">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" id="phone" placeholder="+1 415 000 0000">
+      </div>
+      <div class="form-group">
+        <label>City / Location</label>
+        <input type="text" id="city" placeholder="San Francisco, CA">
+      </div>
+      <div class="form-group">
+        <label>Current Job Title</label>
+        <input type="text" id="currentTitle" placeholder="Software Engineer">
+      </div>
+      <div class="form-group">
+        <label>Current Company</label>
+        <input type="text" id="currentCompany" placeholder="Acme Corp">
+      </div>
+      <div class="form-group">
+        <label>LinkedIn URL</label>
+        <input type="text" id="linkedinUrl" placeholder="https://linkedin.com/in/yourprofile">
+      </div>
+      <div class="form-group">
+        <label>Portfolio / Website</label>
+        <input type="text" id="websiteUrl" placeholder="https://yoursite.com">
+      </div>
+      <div class="form-group">
+        <label>Cover Letter</label>
+        <textarea id="coverLetter" rows="4" placeholder="I am excited to apply..."></textarea>
+        <small>Leave blank to auto-generate from your profile</small>
+      </div>
+    </div>
+
+    <!-- Job Prefs Tab -->
+    <div class="tab-content" id="tab-job">
+      <div class="form-group">
+        <label>Years of Experience</label>
+        <input type="number" id="yearsOfExperience" placeholder="3" min="0" max="50">
+      </div>
+      <div class="form-group">
+        <label>Expected Salary</label>
+        <input type="text" id="expectedSalary" placeholder="120000 or $120k">
+      </div>
+      <div class="form-group">
+        <label>Notice Period</label>
+        <select id="noticePeriod">
+          <option value="Immediately">Immediately / Already left</option>
+          <option value="2 weeks">2 weeks</option>
+          <option value="1 month" selected>1 month</option>
+          <option value="2 months">2 months</option>
+          <option value="3 months">3 months</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Highest Education</label>
+        <select id="education">
+          <option value="Bachelor's Degree" selected>Bachelor's Degree</option>
+          <option value="Master's Degree">Master's Degree</option>
+          <option value="MBA">MBA</option>
+          <option value="PhD">PhD</option>
+          <option value="High School">High School</option>
+        </select>
+      </div>
+      <div class="toggle-group">
+        <label>Authorized to work (current country)</label>
+        <label class="toggle"><input type="checkbox" id="workAuthorized" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-group">
+        <label>Require Visa Sponsorship</label>
+        <label class="toggle"><input type="checkbox" id="requireSponsorship"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-group">
+        <label>Willing to Relocate</label>
+        <label class="toggle"><input type="checkbox" id="willingToRelocate"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-group">
+        <label>Currently Employed</label>
+        <label class="toggle"><input type="checkbox" id="currentlyEmployed" checked><span class="slider"></span></label>
+      </div>
+    </div>
+
+    <!-- Filters Tab -->
+    <div class="tab-content" id="tab-filters">
+      <div class="filter-info">
+        <strong>Set your job filters once.</strong> The bot skips any job that doesn't match.
+      </div>
+      <div class="form-group">
+        <label>Job Title Keywords <span class="hint">(must match)</span></label>
+        <input type="text" id="includeKeywords" placeholder="Product Manager, PM, APM">
+        <small>Comma-separated. Job title must contain at least one.</small>
+      </div>
+      <div class="form-group">
+        <label>Exclude Keywords <span class="hint">(skip if found)</span></label>
+        <input type="text" id="excludeKeywords" placeholder="Senior, Staff, Director, VP">
+        <small>Comma-separated. Job is skipped if title/company contains any.</small>
+      </div>
+      <div class="toggle-group">
+        <label>Remote Jobs Only</label>
+        <label class="toggle"><input type="checkbox" id="remoteOnly"><span class="slider"></span></label>
+      </div>
+      <div class="divider"></div>
+      <div class="stats-row" id="statsRow" style="display:none">
+        <div class="stat"><span id="statApplied">0</span><small>Applied</small></div>
+        <div class="stat"><span id="statSkipped">0</span><small>Skipped</small></div>
+        <div class="stat"><span id="statFailed">0</span><small>Failed</small></div>
+        <div class="stat"><span id="statTotal">0</span><small>Total</small></div>
+      </div>
+    </div>
+
+    <!-- Control Tab -->
+    <div class="tab-content" id="tab-control">
+      <div class="control-info">
+        Go to <strong>LinkedIn Jobs</strong>, search for roles, then hit <strong>Batch Apply</strong>. The bot handles everything — no more inputs needed.
+      </div>
+
+      <div class="progress-wrap" id="progressWrap" style="display:none">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">0 / 0</div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn btn-batch" id="batchBtn">⚡ Batch Apply All</button>
+      </div>
+      <div class="button-group" style="margin-top:6px">
+        <button class="btn btn-single" id="applyBtn">Apply to This Job</button>
+        <button class="btn btn-stop" id="stopBtn" disabled>Stop</button>
+      </div>
+
+      <div class="toggle-group" style="margin-top:8px">
+        <label>Delay between steps</label>
+        <span class="delay-val" id="delayValue">900ms</span>
+      </div>
+      <input type="range" id="stepDelay" min="500" max="3000" step="100" value="900">
+
+      <div class="log-section">
+        <div class="log-header">
+          <span>Activity Log</span>
+          <button class="btn-clear" id="clearLog">Clear</button>
+        </div>
+        <div id="activityLog" class="activity-log"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <button class="btn btn-save" id="saveBtn">Save Profile</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
